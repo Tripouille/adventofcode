@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   main.c                                           .::    .:/ .      .::   */
+/*   day1.c                                           .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/01 13:17:49 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/01 13:34:46 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/01 13:51:06 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,6 +16,16 @@
 #include <stdio.h>
 
 int		get_next_line(int fd, char **line);
+
+long	calculate_fuel(long mass)
+{
+	long	result;
+
+	result = mass / 3 - 2;
+	if (result > 0)
+		return (result + calculate_fuel(result));
+	return (result > 0 ? result : 0);
+}
 
 int		main(int ac, char **av)
 {
@@ -32,11 +42,11 @@ int		main(int ac, char **av)
 	while (get_next_line(fd, &line) == 1)
 	{
 		if (atoi(line))
-			result += atoi(line) / 3 - 2;
+			result += calculate_fuel(atoi(line));
 		free(line);
 	}
 	if (atoi(line))
-		result += atoi(line) / 3 - 2;
+		result += calculate_fuel(atoi(line));
 	free(line);
 	printf("%li\n", result);
 	return (0);
