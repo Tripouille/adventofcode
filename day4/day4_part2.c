@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/03 18:55:22 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/04 13:03:34 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/04 13:06:29 by aalleman    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -48,12 +48,12 @@ int		is_valid(char *tab)
 
 int		main(void)
 {
-	char	tab[6] = "265275";
+	char	tab[6] = "359282";
 	int		valid_combs;
 	int		i;
 
 	valid_combs = 0;
-	while (!is_end(tab, "781584"))
+	while (!is_end(tab, "820401"))
 	{
 		if (is_valid(tab))
 			valid_combs++;
