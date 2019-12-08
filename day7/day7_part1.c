@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   day7_part1.c                                     .::    .:/ .      .::   */
+/*   day5_part2.c                                     .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/05 19:01:13 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/07 15:02:24 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/07 16:26:50 by aalleman    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -17,123 +17,105 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#define NEXT(nb) nb = nb < 4 ? nb + 1 : 0
+int		values[100000];
+char	b[10000];
 
-int		values[5][100000];
-
-void	do_it(void)
+void	do_it(int previous_output)
 {
 	int		i;
 	int		value1;
 	int		value2;
-	int		position[5];
-	int		ampli_nb;
-	int		prev_output;
+	char	b[100];
+	int		ret;
 
-	prev_output = 0;
-	ampli_nb = 0;
-	while (values[4][position[4]] != 99)
+	i = 2;
+	while (values[i] != 99)
 	{
-		if ((values[ampli_nb][position[ampli_nb]] / 100) % 10 == 0)
-			value1 = values[ampli_nb][values[ampli_nb][position[ampli_nb] + 1]];
+		if ((values[i] / 100) % 10 == 0)
+			value1 = values[values[i + 1]];
 		else
-			value1 = values[ampli_nb][position[ampli_nb] + 1];
-		if ((values[ampli_nb][position[ampli_nb]] / 1000) % 10 == 0)
-			value2 = values[ampli_nb][values[ampli_nb][position[ampli_nb] + 2]];
+			value1 = values[i + 1];
+		if ((values[i] / 1000) % 10 == 0)
+			value2 = values[values[i + 2]];
 		else
-			value2 = values[ampli_nb][position[ampli_nb] + 2];
-		if (values[ampli_nb][position[ampli_nb]] % 100 == 1)
+			value2 = values[i + 2];
+		if (values[i] % 100 == 1)
 		{
-			values[ampli_nb][values[ampli_nb][position[ampli_nb] + 3]] = value1 + value2;
-			position[ampli_nb] += 4;
+			values[values[i + 3]] = value1 + value2;
+			i += 4;
 		}
-		else if (values[ampli_nb][position[ampli_nb]] % 100 == 2)
+		else if (values[i] % 100 == 2)
 		{
-			values[ampli_nb][values[ampli_nb][position[ampli_nb] + 3]] = value1 * value2;
-			position[ampli_nb] += 4;
+			values[values[i + 3]] = value1 * value2;
+			i += 4;
 		}
-		else if (values[ampli_nb][position[ampli_nb]] % 100 == 3)
+		else if (values[i] % 100 == 3)
 		{
-			if (prev_output != -1)
-			{
-				values[ampli_nb][values[ampli_nb][position[ampli_nb] + 1]] = prev_output;
-				prev_output = -1;
-				position[ampli_nb] += 2;
-			}
-			else
-				NEXT(ampli_nb);
+			//dprintf(1, "Input : \n");
+			//ret = read(0, b, 100);
+			values[values[i + 1]] = previous_output;
+			i += 2;
 		}
-		else if (values[ampli_nb][position[ampli_nb]] % 100 == 4)
+		else if (values[i] % 100 == 4)
 		{
-			//printf("%d", value1);
-			prev_output = value1;
-			position[ampli_nb] += 2;
+			//printf("\nOutput : %d\n", value1);
+			printf("%d", value1);
+			i += 2;
 		}
-		else if (values[ampli_nb][position[ampli_nb]] % 100 == 5)
+		else if (values[i] % 100 == 5)
 		{
 			if (value1)
-				position[ampli_nb] = value2;
+				i = value2;
 			else
-				position[ampli_nb] += 3;
+				i += 3;
 		}
-		else if (values[ampli_nb][position[ampli_nb]] % 100 == 6)
+		else if (values[i] % 100 == 6)
 		{
 			if (!value1)
-				position[ampli_nb] = value2;
+				i = value2;
 			else
-				position[ampli_nb] += 3;
+				i += 3;
 		}
-		else if (values[ampli_nb][position[ampli_nb]] % 100 == 7)
+		else if (values[i] % 100 == 7)
 		{
 			if (value1 < value2)
-				values[ampli_nb][values[ampli_nb][position[ampli_nb] + 3]] = 1;
+				values[values[i + 3]] = 1;
 			else
-				values[ampli_nb][values[ampli_nb][position[ampli_nb] + 3]] = 0;
-			position[ampli_nb] += 4;
+				values[values[i + 3]] = 0;
+			i += 4;
 		}
-		else if (values[ampli_nb][position[ampli_nb]] % 100 == 8)
+		else if (values[i] % 100 == 8)
 		{
 			if (value1 == value2)
-				values[ampli_nb][values[ampli_nb][position[ampli_nb] + 3]] = 1;
+				values[values[i + 3]] = 1;
 			else
-				values[ampli_nb][values[ampli_nb][position[ampli_nb] + 3]] = 0;
-			position[ampli_nb] += 4;
+				values[values[i + 3]] = 0;
+			i += 4;
 		}
 	}
 }
 
 int		main(int ac, char **av)
 {
-	char	b[10000];
-	char	*buffer = b;
-	int		i;
-	int		ampli_nb;
-	int		fd;
-	int		value;
-	char	c;
+	char			*buffer = b;
+	int				i;
+	int				fd;
+	char			c;
 
-	if (ac != 2 || (fd = open(av[1], O_RDONLY)) < 0)
+	if (ac != 3 || (fd = open(av[1], O_RDONLY)) < 0)
 		return (-1);
 	read(fd, b, 10000);
 	i = 0;
 	while (*buffer != '\n')
 	{
-		value = atoi(buffer);
-		ampli_nb = -1;
-		while (++ampli_nb < 5)
-			values[ampli_nb][i] = value;
-		i++;
+		values[i++] = atoi(buffer);
 		while (isdigit(*buffer) || *buffer == '-')
 			buffer++;
 		if (*buffer == ',')
 			buffer++;
 	}
-	ampli_nb = -1;
-	while (++ampli_nb < 5)
-	{
-		read(0, &c, 1);
-		values[ampli_nb][values[ampli_nb][1]] = c - '0';
-	}
-	do_it();
+	read(0, &c, 1);
+	values[values[1]] = c - '0';
+	do_it(atoi(av[2]));
 	return(0);
 }

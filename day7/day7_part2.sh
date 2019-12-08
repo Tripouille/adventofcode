@@ -37,7 +37,7 @@ while [ $ampli1 -le 9 ]
 						((ampli5++))
 						continue
 					fi
-					prev_ampli=$(echo $ampli1$ampli2$ampli3$ampli4$ampli5 | ./ampli_part2 day7_input.txt)
+					prev_ampli=$(echo $ampli1$ampli2$ampli3$ampli4$ampli5 | ./ampli_part2 test)
 					((ampli5++))
 					#echo $prev_ampli
 					if [ $prev_ampli -gt $max_value ]
