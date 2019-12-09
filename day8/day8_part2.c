@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/08 12:09:28 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/08 13:31:47 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/08 14:34:17 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -46,14 +46,15 @@ void	purge(t_list **list)
 
 char	find_pixel(t_list *list, int i)
 {
-	char	pixel;
+	char	c;
 
-	pixel = '2';
-	if (list->next)
-		pixel = find_pixel(list->next, i);
-	if (pixel == '2')
-		return (list->data[i]);
-	return (pixel);
+	while (list)
+	{
+		if (list->data[i] != '2')
+			c = list->data[i];
+		list = list->next;
+	}
+	return (c);
 }
 
 int		main(void)
