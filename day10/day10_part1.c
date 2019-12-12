@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/10 11:27:17 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/10 12:59:41 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/12 11:56:33 by aalleman    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -21,21 +21,38 @@ char	*map[100];
 int		map_w;
 int		map_h;
 
-int		count_views(char **map, int y, int x)
+void	fill_ratios(char **map, int *ratios, int y_base, int x_base)
 {
-	int		count;
-	int		i_x;
+	int		i;
+	int		ratio;
+	int		x;
+	int		y;
 
-	count = 0;
-	i_x = y;
-	while (i_x < map_w)
+	i = 0;
+	y = -1;
+	while (++y < map_h)
 	{
-		while ()
+		x = -1;
+		while (++x < map_w)
 		{
-
-
+			if (y != y_base && x != x_base && map[y][x] == '#')
+			{
+				ratio = (y - y_base) / (x - x_base);
+				if (!is_in_array(ratios, ratio))
+				{
+					ratios[i] = ratio;
+					i++;
+				}
+			}
 		}
 	}
+}
+
+int		count_views(char **map, int y, int x)
+{
+	int		ratios[500];
+
+	fill_ratios(map, ratios, y, x);	
 }
 
 int		main(void)
@@ -59,9 +76,12 @@ int		main(void)
 		x = -1;
 		while (++x < map_w)
 		{
-			views = count_views(map, y, x);
-			if (views > max_views)
-				max_views = views;
+			if (map[y][x] == '#')
+			{
+				views = count_views(map, y, x);
+				if (views > max_views)
+					max_views = views;
+			}
 		}
 	}
 	return(0);
