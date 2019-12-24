@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/10 11:27:17 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/24 12:42:10 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/24 14:03:28 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -37,6 +37,11 @@ int		laser_x;
 t_ast	destroyed_ast[1000];
 int		i_destroyed_ast;
 
+/*
+** Actualize the *a if t is already in a list change the y and x value
+** if not Create a new one and set a->tan to t before set y and x.
+*/
+
 void	actualize_ast(double t, int y, int x, t_ast *a)
 {
 	while (a->tan && a->tan != t)
@@ -45,6 +50,11 @@ void	actualize_ast(double t, int y, int x, t_ast *a)
 	a->y = y;
 	a->x = x;
 }
+
+/*
+** Simply Sync pa and a and set a->tan to 0.0;
+** pa will be use for easily swap ast with sort_tan()
+*/
 
 void	init_ast(t_ast *a, t_ast **pa)
 {
@@ -67,6 +77,10 @@ void	swap(t_ast **p1, t_ast **p2)
 	*p2 = tmp;
 }
 
+/*
+** Sort pointer on a (pa) by tangent (sort ascending).
+*/
+
 void	sort_tan(t_ast **pa)
 {
 	int		i;
@@ -84,6 +98,10 @@ void	sort_tan(t_ast **pa)
 	}
 }
 
+/*
+** Stock the destroyed ast before remove him from the map.
+*/
+
 void	destroy_ast(t_ast **pa)
 {
 	int		i;
@@ -98,6 +116,11 @@ void	destroy_ast(t_ast **pa)
 	}
 }
 
+/*
+** Return the number of viewed asteroid and destroy them if mode == DESTROY
+** it will alway check from the oposite corner to the center for always keep
+** the closest ast in memory with actualize_ast.
+*/
 
 int		ray_ne(int y, int x, int mode)
 {
@@ -224,6 +247,10 @@ int		ray_nw(int y, int x, int mode)
 	return (i);
 }
 
+/*
+** Fire the ray 360 deg around the pos y , x (clockwise).
+*/
+
 int		ray(int y, int x, int mode)
 {
 	int		ast;
@@ -234,6 +261,10 @@ int		ray(int y, int x, int mode)
 	ast += ray_nw(y, x, mode);
 	return (ast);
 }
+
+/*
+** Find the laser position with ray() in mode != DESTROY (SCAN).
+*/
 
 void	set_laser()
 {
@@ -262,6 +293,10 @@ void	set_laser()
 		}
 	}
 }
+
+/*
+** DO THE FUCKING JOB.
+*/
 
 int		main(int ac, char **av)
 {

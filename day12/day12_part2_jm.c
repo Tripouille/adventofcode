@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/23 17:55:26 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/24 12:24:14 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/24 13:28:01 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -33,6 +33,7 @@ typedef struct		s_moon
 
 t_moon		moons[4];
 t_moon		initial_moons[4];
+int			moon_time[4][100000];
 
 void	set_value(char **s, int *p)
 {
@@ -105,6 +106,14 @@ int		fini()
 	return (1);
 }
 
+void	show_time(int *moon_time, int n)
+{
+	while (n--)
+		printf("%i, ", *moon_time++);
+	printf("\n");
+
+}
+
 int		main(int ac, char **av)
 {
 	char			b[BUFFER_SIZE];
@@ -128,11 +137,30 @@ int		main(int ac, char **av)
 	}
 	i = 1;
 	do_it();
-	while (!fini())
+	int		last_time[4] = {0};
+	int		im[4] = {0};
+	while (i < 100000000)
 	{
+		i_moon = -1;
+		while (++i_moon < 1)
+			if (initial_moons[i_moon].pos_x == moons[i_moon].pos_x
+			&& initial_moons[i_moon].pos_y == moons[i_moon].pos_y
+			&& initial_moons[i_moon].pos_z == moons[i_moon].pos_z)
+			{
+				moon_time[i_moon][im[i_moon]++] = i - last_time[i_moon];
+				last_time[i_moon] = i;
+			}
 		i++;
 		do_it();
 	}
-	printf("Result = %li\n", i);
+	show_time(moon_time[0], 30);
+	printf("\n");
+	//show_time(moon_time[1], 30);
+	//printf("\n");
+	//show_time(moon_time[2], 30);
+	//printf("\n");
+	//show_time(moon_time[3], 30);
+	//printf("\n");
+	//printf("Result = %li\n", i);
 	return(0);
 }

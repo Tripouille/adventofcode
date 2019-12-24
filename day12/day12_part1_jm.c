@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/23 17:55:26 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/23 20:27:11 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/24 14:13:16 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -31,6 +31,10 @@ typedef struct		s_moon
 
 t_moon		moons[4];
 
+/*
+** Parsing.
+*/
+
 void	set_value(char **s, int *p)
 {
 		while (**s != '=')
@@ -40,13 +44,17 @@ void	set_value(char **s, int *p)
 			++*s;
 }
 
+/*
+** just ...
+*/
+
 void	do_it()
 {
 	int		i_moon;
 	int		i;
 
 	i_moon = -1;
-	while (++i_moon < 4)
+	while (++i_moon < 4) // Ajust velocity of the moons.
 	{
 		i = -1;
 		while (++i < 4)
@@ -68,13 +76,17 @@ void	do_it()
 			}
 		}
 	}
-	while (--i_moon >= 0)
+	while (--i_moon >= 0) // Apply velocity of the moons on pos.
 	{
 		moons[i_moon].pos_x += moons[i_moon].vel_x;
 		moons[i_moon].pos_y += moons[i_moon].vel_y;
 		moons[i_moon].pos_z += moons[i_moon].vel_z;
 	}
 }
+
+/*
+** Calcul the correct output.
+*/
 
 int		count()
 {
@@ -101,14 +113,14 @@ int		main(int ac, char **av)
 		return (-1);
 	read(fd, b, BUFFER_SIZE);
 	i_moon = -1;
-	while (++i_moon < 4)
+	while (++i_moon < 4) // Parsing.
 	{
 		set_value(&buffer, &(moons[i_moon].pos_x));
 		set_value(&buffer, &(moons[i_moon].pos_y));
 		set_value(&buffer, &(moons[i_moon].pos_z));
 	}
 	i = -1;
-	while (++i < 1000)
+	while (++i < 1000) // Run the shit.
 		do_it();
 	printf("Result = %i\n", count());
 	return(0);

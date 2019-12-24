@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/09 11:30:42 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/23 16:51:46 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/24 14:09:47 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -49,6 +49,10 @@ void	init_map(char **map, char c)
 			map[y][x] = c;
 	}
 }
+
+/*
+** Simply print the map.
+*/
 
 void	show_map()
 {
@@ -222,8 +226,6 @@ void	do_it(void)
 	}
 }
 
-
-
 int		count(void)
 {
 	int		y;
@@ -267,7 +269,7 @@ int		main(int ac, char **av)
 	init_map(map_mask, '.');
 	pos_y = MAP_W / 2 - 1;
 	pos_x = MAP_W / 2 - 1;
-	map[pos_y][pos_x] = '#';
+	map[pos_y][pos_x] = '#'; // Set the initial pannel at white
 	map_mask[pos_y][pos_x] = '#';
 	robot_ang = NORTH;
 	do_it();

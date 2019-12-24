@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/10 11:27:17 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/22 15:40:00 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/24 13:50:01 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -31,6 +31,10 @@ int		already_view(double t, double *tan)
 	return (0);
 }
 
+/*
+** Count asteroid above the y position.
+*/
+
 int		count_up(int y, int x)
 {
 	double	tan[500] = {0};
@@ -53,6 +57,10 @@ int		count_up(int y, int x)
 	}
 	return (i);
 }
+
+/*
+** Count asteroid below the y position.
+*/
 
 int		count_down(int y, int x)
 {
@@ -85,10 +93,10 @@ int		count_views(char **map, int y, int x)
 	views = count_up(y, x);
 	views += count_down(y, x);
 	i = -1;
-	while (++i < x && map[y][i] != '#');
+	while (++i < x && map[y][i] != '#'); // check if asteroid on the left of the x position on actual y
 	views += i < x ? 1 : 0;
 	i = x;
-	while (++i < map_w && map[y][i] != '#');
+	while (++i < map_w && map[y][i] != '#'); // check if asteroid on the right of the x position on actual y
 	views += i < map_w ? 1 : 0;
 	return (views);
 }

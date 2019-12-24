@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/09 11:30:42 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/23 16:36:39 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/24 14:08:09 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -61,6 +61,10 @@ long	*get_addr(int param_mode, int param_pos)
 	return (0);
 }
 
+/*
+** Return the actual color under the robot.
+*/
+
 int		robot_cam(void)
 {
 	if (map[pos_y][pos_x] == '.')
@@ -68,6 +72,12 @@ int		robot_cam(void)
 	else
 		return (WHITE);
 }
+
+/*
+** Paint the pannel with the correct color befor moving.
+** it will also paint the color white on the map mask if the color is white
+** for count the number of pannel painted.
+*/
 
 void	robot_move(int *robot_cmd)
 {
@@ -133,6 +143,10 @@ void	robot_move(int *robot_cmd)
 		}
 	}
 }
+
+/*
+** Opcode manager.
+*/
 
 void	do_it(void)
 {
@@ -206,7 +220,9 @@ void	do_it(void)
 	}
 }
 
-
+/*
+** Count the number of white pannel on the mask.
+*/
 
 int		count(void)
 {
