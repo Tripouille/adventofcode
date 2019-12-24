@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/10 11:27:17 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/23 13:59:44 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/24 12:42:10 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -41,17 +41,9 @@ void	actualize_ast(double t, int y, int x, t_ast *a)
 {
 	while (a->tan && a->tan != t)
 		a++;
-	if (!a->tan)
-	{
-		a->tan = t;
-		a->y = y;
-		a->x = x;
-	}
-	else if (y > a->y)
-	{
-		a->y = y;
-		a->x = x;
-	}
+	a->tan = t;
+	a->y = y;
+	a->x = x;
 }
 
 void	init_ast(t_ast *a, t_ast **pa)
@@ -117,8 +109,8 @@ int		ray_ne(int y, int x, int mode)
 	int i;
 
 	init_ast(a, pa);
-	checked_x = x - 1;
-	while (++checked_x < map_w)
+	checked_x = map_w;
+	while (--checked_x >= x)
 	{
 		checked_y = -1;
 		while (++checked_y < y)
@@ -148,11 +140,11 @@ int		ray_se(int y, int x, int mode)
 	int i;
 
 	init_ast(a, pa);
-	checked_x = x;
-	while (++checked_x < map_w)
+	checked_x = map_w;
+	while (--checked_x > x)
 	{
-		checked_y = y - 1;
-		while (++checked_y < map_h)
+		checked_y = map_h;
+		while (--checked_y >= y)
 		{
 			t = (double)(x - checked_x) / (y - checked_y);
 			if (map[checked_y][checked_x] == '#')
@@ -182,8 +174,8 @@ int		ray_sw(int y, int x, int mode)
 	checked_x = -1;
 	while (++checked_x <= x)
 	{
-		checked_y = y;
-		while (++checked_y < map_h)
+		checked_y = map_h;
+		while (--checked_y > y)
 		{
 			t = (double)(y - checked_y) / (x - checked_x);
 			if (map[checked_y][checked_x] == '#')
@@ -214,8 +206,8 @@ int		ray_nw(int y, int x, int mode)
 	checked_x = -1;
 	while (++checked_x < x)
 	{
-		checked_y = y + 1;
-		while (--checked_y >= 0)
+		checked_y = -1;
+		while (++checked_y <= y)
 		{
 			t = (double)(x - checked_x) / (y - checked_y);
 			if (map[checked_y][checked_x] == '#')

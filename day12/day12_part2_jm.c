@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/23 17:55:26 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/23 20:28:08 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/24 12:24:14 by jgambard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -130,10 +130,6 @@ int		main(int ac, char **av)
 	do_it();
 	while (!fini())
 	{
-		//if (initial_moons[0].pos_x == moons[0].pos_x
-		//&& initial_moons[0].pos_y == moons[0].pos_y
-		//&& initial_moons[0].pos_z == moons[0].pos_z)
-			//printf("i = %li\n", i);
 		i++;
 		do_it();
 	}
