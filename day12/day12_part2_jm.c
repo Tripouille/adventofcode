@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/12/23 17:55:26 by jgambard     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/24 13:28:01 by jgambard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/26 19:10:47 by tripouil    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -17,7 +17,11 @@
 #include <stdio.h>
 #include <limits.h>
 #include <ctype.h>
+#include "libmath.h"
 #define BUFFER_SIZE 10000
+#define X 0
+#define Y 1
+#define Z 2
 #define ABS(x) (x < 0 ? -x : x)
 
 typedef struct		s_moon
@@ -33,7 +37,13 @@ typedef struct		s_moon
 
 t_moon		moons[4];
 t_moon		initial_moons[4];
-int			moon_time[4][100000];
+int			moons_period[3][100000];
+int			last_time[3] = {0};
+int			imp[3] = {0};
+
+/*
+** Parsing
+*/
 
 void	set_value(char **s, int *p)
 {
@@ -43,6 +53,10 @@ void	set_value(char **s, int *p)
 		while (**s == '-' || isdigit(**s))
 			++*s;
 }
+
+/*
+** Simulate the fucking universe ma biche
+*/
 
 void	do_it()
 {
@@ -80,39 +94,29 @@ void	do_it()
 	}
 }
 
-int		count()
+/*
+** Check if the actual interval has already occured
+** if not return 0 if yes it will add all previous interval
+** to determine the period of the axis.
+*/
+
+int		get_period(int axis, int actual_time)
 {
-	int		i_moon;
 	int		result;
 
 	result = 0;
-	i_moon = -1;
-	while (++i_moon < 4)
-		result += (ABS(moons[i_moon].pos_x) + ABS(moons[i_moon].pos_y) + ABS(moons[i_moon].pos_z))
-		* (ABS(moons[i_moon].vel_x) + ABS(moons[i_moon].vel_y) + ABS(moons[i_moon].vel_z));
+	moons_period[axis][imp[axis]] = actual_time - last_time[axis];
+	last_time[axis] = actual_time;
+	if (imp[axis] && moons_period[axis][imp[axis]] == moons_period[axis][0])
+		while (imp[axis]-- >= 0)
+			result += moons_period[axis][imp[axis]];
+	imp[axis]++;
 	return (result);
 }
 
-int		fini()
-{
-	int		i_moon;
-
-	i_moon = -1;
-	while (++i_moon < 4)
-		if (initial_moons[i_moon].pos_x != moons[i_moon].pos_x
-		|| initial_moons[i_moon].pos_y != moons[i_moon].pos_y
-		|| initial_moons[i_moon].pos_z != moons[i_moon].pos_z)
-			return (0);
-	return (1);
-}
-
-void	show_time(int *moon_time, int n)
-{
-	while (n--)
-		printf("%i, ", *moon_time++);
-	printf("\n");
-
-}
+/*
+** Clean enought for your smart mind.
+*/
 
 int		main(int ac, char **av)
 {
@@ -135,32 +139,35 @@ int		main(int ac, char **av)
 		set_value(&buffer, &(moons[i_moon].pos_z));
 		initial_moons[i_moon].pos_z = moons[i_moon].pos_z;
 	}
-	i = 1;
 	do_it();
-	int		last_time[4] = {0};
-	int		im[4] = {0};
-	while (i < 100000000)
+	i = 1;
+	int		period_x = 0;
+	int		period_y = 0;
+	int		period_z = 0;
+	while (!period_x || !period_y || !period_z)
 	{
-		i_moon = -1;
-		while (++i_moon < 1)
-			if (initial_moons[i_moon].pos_x == moons[i_moon].pos_x
-			&& initial_moons[i_moon].pos_y == moons[i_moon].pos_y
-			&& initial_moons[i_moon].pos_z == moons[i_moon].pos_z)
-			{
-				moon_time[i_moon][im[i_moon]++] = i - last_time[i_moon];
-				last_time[i_moon] = i;
-			}
+		if (!period_x
+		&& initial_moons[0].pos_x == moons[0].pos_x
+		&& initial_moons[1].pos_x == moons[1].pos_x
+		&& initial_moons[2].pos_x == moons[2].pos_x
+		&& initial_moons[3].pos_x == moons[3].pos_x)
+			period_x = get_period(X, i);
+		if (!period_y
+		&& initial_moons[0].pos_y == moons[0].pos_y
+		&& initial_moons[1].pos_y == moons[1].pos_y
+		&& initial_moons[2].pos_y == moons[2].pos_y
+		&& initial_moons[3].pos_y == moons[3].pos_y)
+			period_y = get_period(Y, i);
+		if (!period_z
+		&& initial_moons[0].pos_z == moons[0].pos_z
+		&& initial_moons[1].pos_z == moons[1].pos_z
+		&& initial_moons[2].pos_z == moons[2].pos_z
+		&& initial_moons[3].pos_z == moons[3].pos_z)
+			period_z = get_period(Z, i);
 		i++;
 		do_it();
 	}
-	show_time(moon_time[0], 30);
-	printf("\n");
-	//show_time(moon_time[1], 30);
-	//printf("\n");
-	//show_time(moon_time[2], 30);
-	//printf("\n");
-	//show_time(moon_time[3], 30);
-	//printf("\n");
-	//printf("Result = %li\n", i);
+	printf("period_x = %i period_y = %i period_z = %i\n", period_x, period_y, period_z);
+	printf("result = %li\n", lcm(3, period_x, period_y, period_z)); // least common multiple des trois merdes
 	return(0);
 }
